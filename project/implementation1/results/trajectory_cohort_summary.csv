@@ -1,0 +1,9 @@
+architecture,cohort,task_count,percentage,mean_drift_D1,mean_drift_D3,mean_decay_slope
+latent_react,Instant Success,4,3.5,0.06961,0.0189,-0.02535
+latent_react,Recovered Success,33,28.9,0.06678,0.01942,-0.02368
+latent_react,Persistent Failure,76,66.7,0.06496,0.01916,-0.0229
+latent_react,Degraded,1,0.9,0.03907,0.01515,-0.01196
+text_react,Instant Success,4,3.5,0.0347,0.03554,0.00041
+text_react,Recovered Success,28,24.6,0.04024,0.03661,-0.00181
+text_react,Persistent Failure,82,71.9,0.03727,0.03225,-0.00251
+text_react,Degraded,0,0.0,0.0,0.0,0.0

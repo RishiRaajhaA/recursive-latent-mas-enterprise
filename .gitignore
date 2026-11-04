@@ -1,0 +1,58 @@
+# ==============================================================================
+# Git Ignore for Recursive Multi-Agent Systems (Latent Deliberation)
+# ==============================================================================
+
+# Python Bytecode & Cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+.DS_Store
+
+# Virtual Environments
+venv/
+.venv/
+env/
+ENV/
+
+# Large Model Weights, Adapters, and GGUF Checkpoints (Download via Hugging Face)
+experiments/models/
+models/
+*.safetensors
+*.gguf
+*.bin
+
+# Large Compiled Binary Libraries and DLLs (llama.cpp CUDA runtimes)
+experiments/llama_bin/
+backup/llama_bin/
+*.dll
+*.so
+*.dylib
+
+# Extracted Latent Tensor Caches (Reproducible via extract_latent_representations.py)
+project/implementation1/results/latents/
+latents/
+*.pt
+
+# Local Backups & Redundant Archives
+backup/
+Report.rar
+Report/bin/
+Report/tectonic.zip
+Report/backup_tex/
+Report/AI_Content_Report*.pdf
+Report/ai_report_extracted.txt
+
+# External Upstream Benchmarks & Frameworks (Clone as documented in README)
+tau2-bench-main/
+RecursiveMAS-main/
+
+# Temporary Scratch Files & Editor Artifacts
+.vscode/
+.idea/
+scratch/
+scratch_*.txt
+experiments/scratch/

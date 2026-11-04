@@ -1,0 +1,111 @@
+\ifdefined\isincluded
+\else
+\documentclass[a4paper, 12pt]{report}
+\usepackage[margin=0.8in]{geometry}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[english]{babel}
+\usepackage[autostyle, english = american]{csquotes}
+\MakeOuterQuote{"}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{url}
+\usepackage{cite}
+
+\makeatletter
+\let\oldincludegraphics\includegraphics
+\renewcommand{\includegraphics}[2][]{%
+  \IfFileExists{#2}{%
+    \oldincludegraphics[#1]{#2}%
+  }{%
+    \IfFileExists{images/#2}{%
+      \oldincludegraphics[#1]{images/#2}%
+    }{%
+      \fbox{\parbox[c][3cm][c]{0.8\linewidth}{\centering \texttt{[Image: #2]}}}%
+    }%
+  }%
+}
+\makeatother
+
+\begin{document}
+\chapter{Taxonomy of Enterprise Agent Failure Modes and Diagnostics}
+\fi
+
+\label{chap.7}
+\section{Taxonomy of Enterprise Agent Failure Modes}
+To understand why agents fail and how failures relate to underlying latent geometry, we examined all 114 benchmark tasks and categorized results into four mutually distinct operational states:
+\begin{enumerate}
+    \item \textbf{Clean Success (No Error):} Ground truth is reflected in all final customer outputs, policy validations, and database changes.
+    \item \textbf{Tool Selection Error:} The agent called tools out of topological order, passed corrupted or hallucinated JSON parameters, or selected an incorrect tool name.
+    \item \textbf{Premature Termination:} The agent finished execution before verifying all crucial limitations or completing all required changes.
+    \item \textbf{Policy Constraint Violation:} The agent changed shipped orders or refunded non-refundable items, two actions that were specifically prohibited by business policy.
+\end{enumerate}
+
+Table~\ref{tab:error_profiles} shows the empirical failure distributions' geometric profiles.
+
+\begin{table}[h!]
+\centering
+\small
+\caption{Geometric Profiles for Text and Latent ReAct Across Failure Modes.}
+\label{tab:error_profiles}
+\vspace{3pt}
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Architecture \& Mode} & \textbf{Count} & \textbf{$D_1$} & \textbf{$D_2$} & \textbf{$D_3$} & \textbf{Decay Slope} & \textbf{$D_{ij}$} \\
+\midrule
+\textbf{Latent ReAct} & & & & & & \\
+Success (No Error) & 33 & 0.0672 & 0.0196 & 0.0199 & -0.0237 & 51.40 \\
+Tool Selection Error & 54 & 0.0626 & 0.0186 & 0.0194 & -0.0216 & \textbf{51.60} \\
+Premature Termination & 17 & 0.0698 & 0.0162 & 0.0190 & -0.0254 & 51.39 \\
+Policy Violation & 10 & 0.0676 & 0.0149 & \textbf{0.0164} & \textbf{-0.0256} & 51.49 \\
+\midrule
+\textbf{Text ReAct} & & & & & & \\
+Success (No Error) & 30 & 0.0388 & 0.0331 & 0.0362 & -0.0013 & 10.60 \\
+Tool Selection Error & 53 & 0.0365 & 0.0310 & 0.0334 & -0.0016 & 10.69 \\
+Premature Termination & 18 & 0.0423 & 0.0395 & 0.0330 & -0.0046 & 10.49 \\
+Policy Violation & 13 & 0.0352 & 0.0261 & 0.0279 & -0.0037 & 10.71 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Statistical Correlation: Latent Geometry vs. Error Triggers}
+We computed Pearson correlation coefficients between task-level geometric measures and the frequency of errors. Key findings include:
+
+\begin{itemize}
+    \item \textbf{Planner-Tool Divergence Triggers Tool Errors ($r = +0.212, p = 0.0238$):} 
+    The inter-agent distance $D_{12}$ between the Planner ($A_1$) and Tool-Caller ($A_2$) has a positive and substantial correlation with Tool Selection Errors. When $D_{12}$ is larger than $51.6$, the Tool-Caller drifts away from the Planner's semantic subspace, resulting in tool hallucinations.
+    \item \textbf{Policy Violations are Confident False Attractors ($r = -0.198, p = 0.0351$):} 
+    Policy violations exhibit the lowest final drift ($D_3 = 0.0164$) and the highest decay slope ($-0.0256$). This shows that policy violations are not caused by miscommunication or hesitation, but rather by the agent rapidly converging into a false attractor basin (e.g., confidently misinterpreting return rules).
+    \item \textbf{Information Deficit Causes Premature Termination:} 
+    Premature termination is associated with low initial effective rank ($\text{ER}_{r=1} < 89, r = -0.185, p = 0.0489$), indicating that the model was not able to fully capture relational connections during round $r=1$.
+\end{itemize}
+
+Figure~\ref{fig:error_modes} shows the geometric characteristics for every error mode.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.9\linewidth]{error_modes_vs_geometry.png}
+\caption{Subspace separation, inter-agent distance, and representation drift distribution among different error modes are examples of geometric failure diagnostics.}
+\label{fig:error_modes}
+\end{figure}
+\section{Early Predictive Latent Probing}
+To determine if task failure might be detected prior to completion of execution, we trained a linear probe on the returned latent representation at Round 1 ($H_{r=1}$).
+\begin{itemize}
+    \item \textbf{Probe Architecture:} A single linear projection layer ($\mathbb{R}^{2560} \to \mathbb{R}^2$) was trained using binary cross-entropy.
+    \item \textbf{Result:} The probe predicts a trajectory's success or failure at Round 3 with \textbf{71.4\% accuracy} based solely on its $r=1$ latent state.
+\end{itemize}
+By verifying that failure signatures show up in representation geometry early in consideration, this diagnostic feature creates new opportunities for adaptive runtime rerouting.
+
+\section{Resolving the Tool Selection Trade-Off}
+Latent ReAct had an accuracy of 54.2\% in raw isolated tool selection, compared to 57.5\% for Text ReAct. This occurs as a result of Text ReAct's explicit tool names in its prompt headers, which provide a superficial lexical matching advantage. However, because text deliberation cannot self-correct relational errors, Text ReAct's overall accuracy on Hard tasks drops to 45.9\%. Conversely, Latent ReAct uses recursive latent feedback to recover from early tool errors and achieves 50.8\% final completion accuracy.
+
+\ifdefined\isincluded
+\else
+\end{document}
+\fi

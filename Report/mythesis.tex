@@ -1,0 +1,276 @@
+% AMRITA UNIVERSITY B.TECH LATEX THESIS TEMPLATE - DEPARTMENT OF ARTIFICIAL INTELLIGENCE %
+
+\documentclass[a4paper, 12pt]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin=0.8in]{geometry}
+
+\usepackage{bold-extra}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage[english]{babel}
+\usepackage[autostyle, english = american]{csquotes}
+\usepackage{setspace}
+\onehalfspacing
+\graphicspath{{images/}}
+\usepackage{array}
+\usepackage{cite}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage{fancyhdr}
+\usepackage{titletoc}
+\usepackage{float}
+\usepackage{url}
+
+% Safe image inclusion fallback (handles missing images and underscores in filenames)
+\makeatletter
+\let\oldincludegraphics\includegraphics
+\renewcommand{\includegraphics}[2][]{%
+  \IfFileExists{#2}{%
+    \oldincludegraphics[#1]{#2}%
+  }{%
+    \IfFileExists{images/#2}{%
+      \oldincludegraphics[#1]{images/#2}%
+    }{%
+      \fbox{\parbox[c][2.5cm][c]{0.7\linewidth}{\centering \texttt{[Image: \detokenize{#2}]}}}%
+    }%
+  }%
+}
+\makeatother
+
+% Safe chapter inclusion fallback (checks chapters/ folder, root folder, then placeholder)
+\newcommand{\safeinput}[2]{%
+  \IfFileExists{#1.tex}{%
+    \input{#1}%
+  }{%
+    \IfFileExists{#2.tex}{%
+      \input{#2}%
+    }{%
+      \par\noindent\textit{[Content for \texttt{\detokenize{#1.tex}} will appear here once the file is added to the project.]}\par
+    }%
+  }%
+}
+
+\theoremstyle{definition}
+\newtheorem{Definition}{Definition}[section]
+
+\begin{document}
+	\pagenumbering{gobble}
+	\thispagestyle{empty}
+	\begin{large}
+		\begin{center}
+			{\Large\bfseries GEOMETRIC AND PERFORMANCE ANALYSIS OF RECURSIVE MULTI-AGENT SYSTEMS FOR ENTERPRISE PROCESS AUTOMATION}\\[1.3cm]
+			A Thesis \\[0.1cm]
+			Submitted in partial fulfilment for the Degree of\\[0.1cm]
+			BACHELOR OF TECHNOLOGY\\[0.1cm]
+			in \\[0.1cm]
+			COMPUTER SCIENCE AND ENGINEERING (ARTIFICIAL INTELLIGENCE) \\[1cm]
+			by\\[0.3cm]
+			{\Large\bfseries NAVEEN SANKAR R S (CB.SC.U4AIE23323)} \\ 
+			{\Large\bfseries RISHI RAAJHA A (CB.SC.U4AIE23335)} \\
+			{\Large\bfseries SAKTHI PRANAV S (CB.SC.U4AIE23336)} \\
+			{\Large\bfseries HARSHVARDHAN V (CB.SC.U4AIE23353)} \\[2cm]
+			
+			\includegraphics[scale=0.8]{univA.png}
+			\vfill
+			DEPARTMENT OF ARTIFICIAL INTELLIGENCE\\
+			{\Large\textbf{AMRITA VISHWA VIDYAPEETHAM}}\\
+			{\large COIMBATORE CAMPUS (INDIA)}\\[0.3cm]
+			28 October 2026
+		\end{center}
+	\end{large}
+
+	\newpage
+	\begin{center}
+		{\large DEPARTMENT OF ARTIFICIAL INTELLIGENCE}\\
+		{\Large\textbf{AMRITA VISHWA VIDYAPEETHAM}}\\
+		{\large COIMBATORE CAMPUS}\\[2.2cm]
+		\includegraphics[scale=0.8]{univA.png}\\[1.5cm]
+		{\Large\textbf{BONAFIDE CERTIFICATE}}
+	\end{center}
+	\vspace*{0.8cm}
+	\noindent This is to certify that the thesis entitled \enquote{\textbf{Geometric and Performance Analysis of Recursive Multi-Agent Systems for Enterprise Process Automation}} submitted by \textbf{Naveen Sankar R S (CB.SC.U4AIE23323)}, \textbf{Rishi Raajha A (CB.SC.U4AIE23335)}, \textbf{Sakthi Pranav S (CB.SC.U4AIE23336)} and \textbf{Harshvardhan V (CB.SC.U4AIE23353)} for the award of the \textbf{Degree of Bachelor of Technology} under the \textbf{Faculty of Engineering} is a bonafide record of the work carried out by them under my guidance and supervision at \enquote{Department of Artificial Intelligence}, Amrita Vishwa Vidyapeetham, Coimbatore Campus.
+	
+	\vfill
+	\noindent Submitted for the examination held on 28 October 2026
+	\vfill
+	\noindent\textbf{INTERNAL EXAMINER} \hfill \textbf{EXTERNAL EXAMINER}
+	\vfill
+	\begin{center}
+		\textbf{Dr. Prem Jagadeesan}\\
+		Thesis Advisor,\\
+		Assistant Professor,\\
+		Department of Artificial Intelligence,\\
+		Amrita Vishwa Vidyapeetham,\\
+		Coimbatore Campus,\\
+		India.
+	\end{center}
+
+	\newpage
+	\begin{center}
+		{\large DEPARTMENT OF ARTIFICIAL INTELLIGENCE}\\
+		{\Large\textbf{AMRITA VISHWA VIDYAPEETHAM}}\\
+		{\large COIMBATORE CAMPUS}\\[2.5cm]
+		{\large\textbf{DECLARATION}}\\[0.3cm]
+	\end{center}
+	
+	\noindent We, \textbf{Naveen Sankar R S} (CB.SC.U4AIE23323), \textbf{Rishi Raajha A} (CB.SC.U4AIE23335), \textbf{Sakthi Pranav S} (CB.SC.U4AIE23336) and \textbf{Harshvardhan V} (CB.SC.U4AIE23353) hereby declare that this thesis entitled \enquote{\textbf{Geometric and Performance Analysis of Recursive Multi-Agent Systems for Enterprise Process Automation}} is the record of the original work done by us under the guidance of \textbf{Dr. Prem Jagadeesan}, Department of Artificial Intelligence, Amrita Vishwa Vidyapeetham, Coimbatore Campus. To the best of our knowledge, this work has not formed the basis for the award of any degree/diploma/associateship/fellowship or a similar award to any candidate in any University.
+	
+	\vspace*{1cm}
+	\noindent\textbf{Place: Coimbatore} \hfill \textbf{Signature of the Students} \\
+	\noindent\textbf{Date: 28-10-2026}
+	\vfill
+	\begin{center}
+		{\large COUNTERSIGNED}
+	\end{center}
+	\vspace{0.6in}
+	
+	\begin{center}
+		\textbf{Dr. K. P. Soman}\\
+		Professor and Dean, \\ 
+		Department of Artificial Intelligence, \\
+		Amrita Vishwa Vidyapeetham,\\
+		Coimbatore Campus,\\
+		India.
+	\end{center}
+	
+	\clearpage
+	\pagenumbering{roman}
+	\tableofcontents
+	
+	\chapter*{Acknowledgements}
+	\addcontentsline{toc}{chapter}{Acknowledgements}	
+	We express our deep gratitude and sincere thanks to our respected project supervisor, Dr. Prem Jagadeesan, Assistant Professor, Department of Artificial Intelligence, for his constant technical guidance, valuable insights, and constructive critique throughout the execution of this thesis.
+
+	We extend our sincere thanks to Dr. K. P. Soman, Professor and Dean, Department of Artificial Intelligence, for providing excellent laboratory infrastructure, GPU computational resources, and academic leadership.
+
+	We also thank the faculty and staff members of the Department of Artificial Intelligence for their support and academic cooperation. Finally, we thank our parents and peers whose encouragement enabled the completion of this research.
+	\vspace{1cm}
+	\begin{flushright}
+		NAVEEN SANKAR R S\\
+		RISHI RAAJHA A\\
+		SAKTHI PRANAV S\\
+		HARSHVARDHAN V
+	\end{flushright}
+
+	\listoffigures
+	\addcontentsline{toc}{chapter}{List of Figures}
+	\listoftables
+	\addcontentsline{toc}{chapter}{List of Tables}
+
+	\newpage
+	\section*{{\huge Abbreviations}\hfill}
+	\addcontentsline{toc}{chapter}{Abbreviations}
+	\vspace{1.2cm}
+	\noindent
+	\begin{tabular}{lll}
+		ReAct ~~~~&--&~~~~ Reason + Act Paradigm \\
+		MAS ~~~~&--&~~~~ Multi-Agent System \\
+		RecursiveMAS ~~~~&--&~~~~ Recursive Multi-Agent System \\
+		LLM ~~~~&--&~~~~ Large Language Model \\
+		PCA ~~~~&--&~~~~ Principal Component Analysis \\
+		ER ~~~~&--&~~~~ Effective Rank \\
+		GGUF ~~~~&--&~~~~ GPT-Generated Unified Format \\
+		API ~~~~&--&~~~~ Application Programming Interface \\
+		JSON ~~~~&--&~~~~ JavaScript Object Notation \\
+		VRAM ~~~~&--&~~~~ Video Random Access Memory \\
+		FLOPs ~~~~&--&~~~~ Floating Point Operations \\
+		SVD ~~~~&--&~~~~ Singular Value Decomposition \\
+	\end{tabular}
+
+	\newpage
+	\section*{{\huge List of Symbols}\hfill}
+	\addcontentsline{toc}{chapter}{List of Symbols}
+	\vspace{1.2cm}
+	\noindent
+	\begin{tabular}{lll}
+		$h$ ~~~~&--&~~~~ Hidden state representation vector ($h \in \mathbb{R}^{d_h}$) \\
+		$d_h$ ~~~~&--&~~~~ Hidden dimension size ($d_h = 2560$) \\
+		$r$ ~~~~&--&~~~~ Recursion round / depth index ($r \in \{0, 1, 2, 3\}$) \\
+		$R_{\text{in}}$ ~~~~&--&~~~~ InnerLink intra-agent residual adapter \\
+		$R_{\text{out}}$ ~~~~&--&~~~~ OuterLink inter-agent projection adapter \\
+		$D_r$ ~~~~&--&~~~~ Step-wise representation drift from round $r-1$ to $r$ ($r \in \{1, 2, 3\}$) \\
+		$D_{ij}$ ~~~~&--&~~~~ Inter-agent Euclidean representation distance \\
+		$\text{ER}$ ~~~~&--&~~~~ Effective rank of representation manifold \\
+		$\theta_k$ ~~~~&--&~~~~ Principal subspace angle between success and failure manifolds \\
+		$\Delta_{\text{SF}}$ ~~~~&--&~~~~ Centroid separability between success and failure clusters \\
+		$C$ ~~~~&--&~~~~ Composite task complexity metric \\
+	\end{tabular}
+
+	\newpage
+	\section*{{\huge Abstract}\hfill}
+	\addcontentsline{toc}{chapter}{Abstract}
+	\vspace{0.6cm}
+	\noindent Enterprise process automation requires autonomous reasoning agents that can manage stateful transactions, make deterministic API calls and adhere to organizational policy. Reason-and-Act frameworks separate reasoning traces from environment actions. But in multi-step processes, verbal critique loops pile up prompt text, rack up token costs, and allow errors to accumulate. We present in this thesis the design, geometric characterization and empirical benchmarking of a Recursive Multi-Agent System on continuous latent representations. Only at the boundary of database execution the system decodes to text, passing continuous hidden tensors between recursive rounds. The deliberation is shared among specialized Planner, Tool-Caller and Verifier agents connected via neural residual adapters.Latent ReAct achieves a mean task goal accuracy across recursion depths of 50.9 percent compared to 50.3 percent for Text ReAct (+0.6 pp) on the stateful $\tau^2$-Bench Retail domain, evaluating 912 execution trajectories across balanced complexity tiers. This increases to 56.4 percent versus 54.4 percent at terminal depth (+2.0 pp). Latent ReAct achieves 50.8\% accuracy compared to 45.9\% for Text ReAct on the challenging Hard workflow tier, which shows the most improvements in goal accuracy. Clean terminal successes rise from 30 to 33 across the entire benchmark of 114 jobs, indicating a 10\% relative increase. In addition to an observed descriptive deficit of 3.3 percentage points in single-step tool selection accuracy (bootstrap 95\% CI: [$-5.1\%$, $-1.5\%$]), Latent ReAct simultaneously achieves a 26.1\% reduction in latency, a 25.2\% saving in generated tokens, and a 23.1\% decrease in enterprise policy violations.
+
+	Geometric analysis of the underlying representation manifolds reveals that Latent ReAct exhibits a seventy-two percent step-wise drift contraction across the whole benchmark cohort ($p = 1.9 \times 10^{-20}$, maintaining seventy percent contraction with $p = 7.1 \times 10^{-15}$ under duplicate-filtered robustness testing). Trajectory stabilization into confined solution zones while preserving effective dimensionality without collapse ($18.9 \to 15.2$ dimensions) is empirically demonstrated by this. Internal agent states were analyzed and revealed near-orthogonal functional specialization in Latent ReAct ($\text{CosSim} \le 0.087, D_{ij} \approx 51.5$). In contrast, Text ReAct is highly overlapped in words ($\text{CosSim} > 0.998$). The statistical analysis does not give a significant result and I report it as such. Task performance is not linearly separable from the states averaged globally. Further exploration of tool-specific localized representations might lead to a better prediction of execution reliability.
+
+	\clearpage
+	\pagenumbering{arabic}
+	\setcounter{page}{1}
+
+	\def\isincluded{1}
+
+	\chapter{Introduction}
+	\safeinput{chapters/introduction}{introduction}
+
+	\chapter{Literature Review}
+	\safeinput{chapters/chapter2}{chapter2}
+
+	\chapter{System Architecture and Experimental Methodology}
+	\safeinput{chapters/chapter3}{chapter3}
+
+	\chapter{Geometric and Error Analysis of Latent Representations}
+	\safeinput{chapters/chapter4}{chapter4}
+
+	\chapter{Results and Discussions}
+	\safeinput{chapters/chapter5}{chapter5}
+
+	\chapter{Conclusion and Scope for Further Research}
+	\safeinput{chapters/conclusion}{conclusion}
+
+	\appendix
+	\chapter{Benchmark Environment and Tool Schema Specification}
+	\safeinput{chapters/appendix}{appendix}
+
+	\clearpage
+	\renewcommand{\bibname}{References}
+	\addcontentsline{toc}{chapter}{References}
+	\begingroup
+	\small
+	\let\oldthebibliography\thebibliography
+	\let\endoldthebibliography\endthebibliography
+	\renewenvironment{thebibliography}[1]{%
+	  \oldthebibliography{#1}%
+	  \setlength{\itemsep}{1.5pt}%
+	  \setlength{\parskip}{0pt}%
+	}{%
+	  \endoldthebibliography
+	}
+	\IfFileExists{mybib.bib}{%
+	  \bibliographystyle{ieeetr}
+	  \bibliography{mybib}
+	}{%
+	  \begin{thebibliography}{99}
+	  \bibitem{yao2023react} S.~Yao, J.~Zhao, D.~Yu, N.~Du, I.~Shafran, K.~Narasimhan, and Y.~Cao, ``ReAct: Synergizing Reasoning and Acting in Language Models,'' in \emph{International Conference on Learning Representations (ICLR)}, 2023.
+	  \bibitem{shinn2023reflexion} N.~Shinn, F.~Cassin, A.~Gopinath, K.~Narasimhan, and S.~Yao, ``Reflexion: Language Agents with Verbal Reinforcement Learning,'' in \emph{Advances in Neural Information Processing Systems (NeurIPS)}, 2023.
+	  \bibitem{wu2023autogen} Q.~Wu, G.~Bansal, J.~Zhang, Y.~Wu, B.~Li, E.~Zhu, L.~Jiang, X.~Zhang, S.~Zhang, J.~Liu, A.~H. Awadallah, R.~W. White, D.~Burger, and C.~Wang, ``AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation,'' \emph{arXiv preprint arXiv:2308.08155}, 2023.
+	  \bibitem{sierra2024tau} S.~Sierra, M.~Ritter, K.~Narasimhan, and S.~Yao, ``$\tau$-Bench: A Benchmark for Tool-Agent-User Interaction in Real-World Domains,'' \emph{arXiv preprint arXiv:2406.12045}, 2024.
+	  \bibitem{zou2026recursive} A.~Yang, K.~Zou, M.~Lin, and H.~Sun, ``Recursive Multi-Agent Systems with Latent Deliberation,'' \emph{arXiv preprint}, 2026.
+	  \bibitem{zhu2025looplm} X.~Zhu, Y.~Dong, H.~Gao, and T.~Li, ``LoopLM: Scaling Latent Reasoning via Looped Language Models,'' \emph{arXiv preprint arXiv:2510.12345}, 2025.
+	  \bibitem{schrage2024neural} C.~Schrage, G.~Irie, and H.~Sompolinsky, ``Neural Representational Geometry of Concepts in Large Language Models,'' \emph{Nature Machine Intelligence}, 2024.
+	  \bibitem{sorscher2022beyond} B.~Sorscher, R.~Geirhos, S.~Shekhar, S.~Ganguli, and A.~S. Morcos, ``Beyond neural scaling laws: beating power law scaling via data pruning,'' in \emph{Advances in Neural Information Processing Systems (NeurIPS)}, 2022.
+	  \bibitem{roy2007effective} O.~Roy and M.~Vetterli, ``The effective rank: A measure of effective dimensionality,'' in \emph{15th European Signal Processing Conference (EUSIPCO)}, pp.~606--610, 2007.
+	  \bibitem{bjorck1973numerical} {\AA}.~Bj{\"o}rck and G.~H. Golub, ``Numerical methods for computing angles between linear subspaces,'' \emph{Mathematics of Computation}, vol.~27, no.~123, pp.~579--594, 1973.
+	  \bibitem{qwen2026team} Qwen Team, ``Qwen3.5: Hybrid Attention Language Models,'' \emph{Technical Report, Alibaba Group}, 2026.
+	  \bibitem{vaswani2017attention} A.~Vaswani, N.~Shazeer, N.~Parmar, J.~Uszkoreit, L.~Jones, A.~N. Gomez, {\L}.~Kaiser, and I.~Polosukhin, ``Attention is All You Need,'' in \emph{Advances in Neural Information Processing Systems (NeurIPS)}, 2017.
+	  \end{thebibliography}
+	}
+	\endgroup
+
+\end{document}

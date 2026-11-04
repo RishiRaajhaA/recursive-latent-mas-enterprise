@@ -1,0 +1,8 @@
+Customer: Alex Johnson
+Order ID: #W98231
+Item: Ultra-Quiet Mechanical Keyboard (RGB Backlight)
+Status: Shipped via FedEx Express
+Estimated Delivery: September 2, 2026 by 4:00 PM
+Tracking Number: FDX-8823-9012
+Total Amount: $149.99
+Payment Method: Credit Card (ending in 4092)

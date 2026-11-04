@@ -1,0 +1,24 @@
+{
+  "latent_react": {
+    "success_failure_centroid_separation": 0.7617,
+    "principal_angles_deg": [
+      19.83,
+      29.9,
+      32.83,
+      46.53,
+      70.66
+    ],
+    "theta_1_deg": 19.83
+  },
+  "text_react": {
+    "success_failure_centroid_separation": 0.9763,
+    "principal_angles_deg": [
+      23.06,
+      65.23,
+      73.24,
+      82.66,
+      89.56
+    ],
+    "theta_1_deg": 23.06
+  }
+}

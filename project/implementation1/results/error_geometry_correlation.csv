@@ -1,0 +1,31 @@
+architecture,geometric_feature,error_target,pearson_r,pearson_p_value,spearman_rho,spearman_p_value,is_significant
+latent_react,drift_D1,Overall Task Failure,-0.0627,0.50742,-0.0655,0.48846,False
+latent_react,drift_D1,Tool Selection Error,-0.1481,0.11577,-0.1634,0.08244,False
+latent_react,drift_D1,Policy Violation,0.0363,0.70126,0.049,0.60466,False
+latent_react,drift_D2,Overall Task Failure,-0.112,0.23549,-0.0823,0.38409,False
+latent_react,drift_D2,Tool Selection Error,0.0473,0.61749,0.083,0.37988,False
+latent_react,drift_D2,Policy Violation,-0.1294,0.17002,-0.1479,0.11622,False
+latent_react,drift_D3,Overall Task Failure,-0.0603,0.52361,-0.1311,0.16451,False
+latent_react,drift_D3,Tool Selection Error,0.0217,0.81843,0.0254,0.78884,False
+latent_react,drift_D3,Policy Violation,-0.1224,0.19457,-0.1479,0.11622,False
+latent_react,drift_decay_slope,Overall Task Failure,0.039,0.68016,0.0482,0.61059,False
+latent_react,drift_decay_slope,Tool Selection Error,0.1534,0.10313,0.17,0.0705,False
+latent_react,drift_decay_slope,Policy Violation,-0.0812,0.39028,-0.089,0.34611,False
+latent_react,inter_agent_distance,Overall Task Failure,0.1489,0.11381,0.1296,0.16934,False
+latent_react,inter_agent_distance,Tool Selection Error,0.2116,0.02379,0.1618,0.08553,True
+latent_react,inter_agent_distance,Policy Violation,-0.0071,0.9401,0.0113,0.90495,False
+text_react,drift_D1,Overall Task Failure,-0.0399,0.67326,-0.0711,0.45204,False
+text_react,drift_D1,Tool Selection Error,-0.0914,0.3334,-0.0922,0.32928,False
+text_react,drift_D1,Policy Violation,-0.069,0.46562,-0.0138,0.88382,False
+text_react,drift_D2,Overall Task Failure,-0.0276,0.77105,-0.0905,0.33825,False
+text_react,drift_D2,Tool Selection Error,-0.0719,0.44707,-0.0556,0.55694,False
+text_react,drift_D2,Policy Violation,-0.128,0.17478,-0.1292,0.17083,False
+text_react,drift_D3,Overall Task Failure,-0.1159,0.21943,-0.1816,0.05315,False
+text_react,drift_D3,Tool Selection Error,-0.0045,0.9621,0.0091,0.92357,False
+text_react,drift_D3,Policy Violation,-0.1396,0.13855,-0.1757,0.06151,False
+text_react,drift_decay_slope,Overall Task Failure,-0.0731,0.43943,-0.0832,0.37862,False
+text_react,drift_decay_slope,Tool Selection Error,0.081,0.39172,0.0639,0.49963,False
+text_react,drift_decay_slope,Policy Violation,-0.0686,0.46846,-0.0797,0.39944,False
+text_react,inter_agent_distance,Overall Task Failure,0.0416,0.66052,0.0206,0.82793,False
+text_react,inter_agent_distance,Tool Selection Error,0.0948,0.31549,0.0449,0.6353,False
+text_react,inter_agent_distance,Policy Violation,0.0479,0.61272,0.0566,0.54969,False

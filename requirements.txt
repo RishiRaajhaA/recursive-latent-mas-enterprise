@@ -1,0 +1,34 @@
+# ==============================================================================
+# Requirements for Recursive Multi-Agent Systems Enterprise Analysis Project
+# ==============================================================================
+
+# Core Deep Learning & Model Inference
+torch>=2.2.0
+transformers>=4.45.0
+accelerate>=0.34.0
+bitsandbytes>=0.43.0
+peft>=0.12.0
+safetensors>=0.4.0
+huggingface-hub>=0.25.0
+
+# Agentic Framework & Workflow Orchestration
+langgraph>=0.2.0
+langchain>=0.3.0
+langchain-core>=0.3.0
+pydantic>=2.7.0
+
+# Enterprise Benchmark Ecosystem (Local Tau2-Bench)
+-e ./tau2-bench-main
+openai>=1.40.0
+
+# Mathematical, Statistical & Geometric Representation Analysis
+scikit-learn>=1.4.0
+scipy>=1.12.0
+numpy>=1.26.0
+pandas>=2.2.0
+
+# Visualization, Logging & Utilities
+matplotlib>=3.8.0
+seaborn>=0.13.0
+tqdm>=4.66.0
+rich>=13.7.0

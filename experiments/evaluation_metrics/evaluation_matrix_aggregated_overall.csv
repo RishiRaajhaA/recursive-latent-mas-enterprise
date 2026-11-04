@@ -1,0 +1,9 @@
+architecture,depth,count,success_rate_pct,avg_latency_sec,avg_prompt_tokens,avg_gen_tokens,avg_aggregate_tokens,cost_per_1k_usd,energy_wh
+latent_react,0,6,16.7,4.03,596.2,85.2,681.3,1.0647,0.0672
+latent_react,1,6,16.7,8.68,1443.7,197.5,1641.2,2.5603,0.1447
+latent_react,2,6,50.0,14.19,2639.2,303.5,2942.7,4.5658,0.2364
+latent_react,3,6,50.0,19.38,4070.8,404.3,4475.2,6.9148,0.3231
+text_react,0,6,16.7,6.11,644.5,129.0,773.5,1.2247,0.1018
+text_react,1,6,33.3,12.77,1783.2,275.8,2059.0,3.2265,0.2128
+text_react,2,6,33.3,18.26,3317.5,393.8,3711.3,5.764,0.3043
+text_react,3,6,33.3,24.71,4930.8,517.3,5448.2,8.431,0.4118

@@ -1,0 +1,95 @@
+\ifdefined\isincluded
+\else
+\documentclass[a4paper, 12pt]{report}
+\usepackage[margin=0.8in]{geometry}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[english]{babel}
+\usepackage[autostyle, english = american]{csquotes}
+\MakeOuterQuote{"}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{url}
+\usepackage{cite}
+
+\makeatletter
+\let\oldincludegraphics\includegraphics
+\renewcommand{\includegraphics}[2][]{%
+  \IfFileExists{#2}{%
+    \oldincludegraphics[#1]{#2}%
+  }{%
+    \IfFileExists{images/#2}{%
+      \oldincludegraphics[#1]{images/#2}%
+    }{%
+      \fbox{\parbox[c][3cm][c]{0.8\linewidth}{\centering \texttt{[Image: #2]}}}%
+    }%
+  }%
+}
+\makeatother
+
+\begin{document}
+\chapter{Geometric and Error Analysis of Latent Representations}
+\fi
+
+\label{chap.4}
+\section{Theoretical Formulation of Geometric Representation Metrics}
+We organize the agent representations as trajectories on a continuous manifold $\mathcal{M} \subset \mathbb{R}^{d_h}$ with hidden dimension $d_h = 2560$ in order to characterize the internal deliberative dynamics of multi-agent execution. The system representation state $H_r$, which records the unified representational snapshot over recursive rounds $r \in \{0, 1, 2, 3\}$, is examined.
+
+Directional alignment measures how consistently the system's representations are orientated across a series of recursive passes using cosine similarity:
+\begin{equation}
+    \text{CosSim}(H_r, H_{r-1}) = \frac{H_r \cdot H_{r-1}}{\|H_r\|_2 \, \|H_{r-1}\|_2} \quad \text{for } r \in \{1, 2, 3\}
+\end{equation}
+Representation drift, or $D_r$, measures the step-wise distance traveled on the representation manifold between subsequent rounds:
+\begin{equation}
+    D_r = 1 - \text{CosSim}(H_r, H_{r-1}) \quad \text{for } r \in \{1, 2, 3\}
+\end{equation}
+where trajectory shifts are measured in stages by $D_1 = D(H_0 \to H_1)$, $D_2 = D(H_1 \to H_2)$, and $D_3 = D(H_2 \to H_3)$. It is possible to ascertain if multi-agent deliberation converges to a localized representation or continues to wander across state space by tracking $D_r$ during subsequent passes.
+
+We measure the effective dimensionality of the representation manifold across tasks using the Participation Ratio \cite{sorscher2022beyond, roy2007effective}:
+\begin{equation}
+    \text{PR}(H) = \frac{(\sum_{i=1}^K \lambda_i)^2}{\sum_{i=1}^K \lambda_i^2}
+\end{equation}
+where $\lambda_i$ represents the eigenvalues of the centered covariance matrix computed across task representations. Unlike straightforward discrete rank metrics, the Participation Ratio quantifies the continuous effective dimensionality covered by the representation manifold and shows whether recurrent recursion compresses the representational subspace or results in catastrophic dimensional collapse.
+
+We examine the relationship between representation geometry and task resolution by evaluating statistical effect sizes between successful and unsuccessful rollouts using Cliff's Delta ($\delta$):
+\begin{equation}
+    \delta = \frac{\#(\mathcal{S}_{\text{succ}} > \mathcal{S}_{\text{fail}}) - \#(\mathcal{S}_{\text{succ}} < \mathcal{S}_{\text{fail}})}{n_{\text{succ}} \cdot n_{\text{fail}}}
+\end{equation}
+complemented by non-parametric Mann-Whitney $U$ tests across task trajectories and Holm-Bonferroni family-wise error rate corrections over the whole family of $m = 10$. Five possible geometric predictors for both designs are evaluated through hypothesis testing: final-step drift, trajectory tortuosity, net trajectory drift, cumulative path length, and representation $L_2$ norm.
+
+\section{Inferences from Representation Drift and Convergence Dynamics}
+The trajectory dynamics of text-mediated and latent recursion differ significantly, according to a comprehensive empirical investigation of all 114 retail tasks. During the initial transition from round zero to round one, the system state in Latent ReAct exhibits an instantaneous, decisive movement with a mean cosine distance of zero point zero six five. Crucially, this single initial transition accounts for 64\% of the total trajectory displacement during the three-round recursive budget. In the subsequent rounds, the step-wise displacement considerably decreases, exhibiting a near-stationary drift of zero point zero one eight between rounds one and two and zero point zero one nine between rounds two and three. A paired Wilcoxon signed-rank test confirms that this step-wise reduction from the first step to subsequent steps is highly statistically significant ($p = 1.9 \times 10^{-20}$), suggesting that latent recursion rapidly stabilizes within a constrained representational domain.
+
+In contrast, Multi-Round Text ReAct does not exhibit similar stability and maintains continuous, unattenuated representational drift during all recursive runs. Text-mediated system states drift by zero point zero three eight in the first transition, zero point zero three two in the second, and zero point zero three three in the third, accounting for only thirty-seven percent of the total trajectory movement. Paired non-parametric testing reveals significant differences between latent and text drift profiles at each recursion step ($p < 10^{-10}$).
+
+To rule out the chance that this measured contraction is an artifact of cached or un-updated agent states, an independent robustness analysis was performed by removing all sixty-six jobs displaying bit-identical agent representations over successive rounds. On the remaining 48 carefully updated tasks, the latent contraction is completely resilient, shifting from zero point zero six nine to zero point zero two one ($p = 7.1 \times 10^{-15}$). However, during each round ($p = 0.96$), the text baseline remains entirely flat with an invariant drift of zero point zero four zero.
+
+A foundation for comprehending the theoretical underpinnings of this disparity is offered by discrete dynamical systems. Dynamical systems theory states that an iterative mapping $h_{r+1} = R(h_r)$ exhibits fixed-point attraction if it meets a contractive condition in a confined neighborhood surrounding an equilibrium state. Although a parameterized residual Multi-Layer Perceptron ($R(h) = h + W_2 \sigma(W_1 h)$) can not logically guaranty contractivity across all possible inputs without explicit Lipschitz norm constraints, our empirical results demonstrate significant convergence-like behavior in practice. After the fundamental task context is included in the initial latent update, subsequent residual perturbations decrease by more than 70\%, limiting the trajectory to a stable local attractor basin. Nevertheless, in each cycle of text recursion, autoregressive sampling generates new natural language critique tokens; re-encoding these verbal strings introduces stochastic linguistic variability, which consistently interferes with internal activations and prevents trajectory stabilization.
+
+\section{Dimensionality Analysis and Subspace Compression}
+The Participation Ratio for over two hundred random subsets of ninety tasks suggests that Latent ReAct uses a strictly lower-dimensional and more focused representational subspace than Text ReAct. So at round zero the text occupies twenty-two point zero dimensions but the latent representation manifold occupies an average of eighteen point nine effective dimensions. Both designs exhibit continuous representational compression over iterative runs. By round three their effective dimensionality (fifteen point two dimensions for latent, sixteen point eight dimensions for text) has been reduced by about twenty to twenty-three percent.
+
+This interpretation is consistent with the persistent dimensionality gap observed across more than 97\% of bootstrap subsamples, where continuous latent deliberation filters away irrelevant lexical variation and constrains multi-agent reasoning to a compact semantic subspace directly relevant to task constraints. Importantly, recurrent latent passing does not suffer from catastrophic dimensional collapse, as it preserves sufficient representational capacity to encode multi-step corporate workflows, as evidenced by the preservation of 15.2 effective dimensions at full recursion depth.
+
+To determine whether individual agent roles preserve distinct functional identities within this compact subspace, we evaluate inter-agent directional alignment using cosine similarity $\text{CosSim}(A_i, A_j)$ and Euclidean distance $D_{ij} = \|H_i - H_j\|_2$ across the Planner ($A_1$), Tool-Caller ($A_2$), and Verifier ($A_3$). With an average cosine similarity of $\text{CosSim}(A_1, A_2) = 0.087$ between Planner and Tool-Caller representations and $\text{CosSim}(A_2, A_3) = 0.049$ between Tool-Caller and Verifier, the average inter-agent Euclidean distance is $D_{ij} \approx 51.5$. Agent activations in Latent ReAct preserve functional specialization that is almost orthogonal. A two-sample Kolmogorov-Smirnov test reveals a substantial difference in the inter-agent cosine similarity distribution in Latent ReAct and Text ReAct ($p < 10^{-15}$). With an average cosine similarity $\text{CosSim} > 0.998$ and a compressed Euclidean distance of $D_{ij} \approx 10.6$, internal activations in Text ReAct exhibit significant overlap. This is due to the fact that verbose dialog history is appended to a shared prompt to establish each agent's context. This empirical difference supports the idea that continuous tensor routing through the OuterLink adapters maintains functional role specialization rather than collapsing into representational redundancy.
+
+\section{Failure Diagnostics and the Null Outcome Relationship}
+An important scientific challenge is whether global geometric measurements can directly distinguish between successful task completions and execution failures. In order to determine Cliff's Delta effect sizes and bootstrap confidence intervals across five candidate geometric features, we compared thirty-three clean-success rollouts against eighty-one non-clean or failed rollouts in Latent ReAct and thirty clean-success rollouts against eighty-four non-clean or failed rollouts in Text ReAct (using the same evaluation partitioning tasks under general binary success: sixty-four vs. fifty in Latent, sixty-two vs. fifty-two in Text).
+The empirical study establishes a clear and accurate negative consequence. All candidate features, such as net trajectory drift ($\delta = 0.093, p = 0.438$), cumulative path length ($\delta = 0.140, p = 0.245$), trajectory tortuosity ($\delta = 0.036, p = 0.769$), final-step drift ($\delta = 0.167, p = 0.164$), and final representation norm ($\delta = -0.058, p = 0.630$), have 95\% bootstrap confidence intervals that include zero. Across the family of statistical hypotheses, no geometric metric achieves significance following Holm-Bonferroni adjustment (minimum adjusted $p = 0.54$). Similarly, task complexity tiers do not alter representation drift (Kruskal-Wallis $p = 0.73$), and cross-validated linear probes trained on global representations are unable to decode task difficulty above chance levels (balanced accuracy of zero point two nine to zero point three eight against chance baseline zero point three three).
+
+This strict null finding offers an important technical insight: the macroscopic, pooling system representations ($H_r$) do not geometrically encode downstream job fulfillment linearly. Because $H_r$ is an average across many functional roles, averaging smooths over local, agent-specific signals that control tool execution integrity. Interestingly, an exploratory linear probe on isolated Tool-Caller representations showed a marginal predictive signal for task outcome (Area Under the Curve of 0.64, permutation $p = 0.05$) ($H_2$). We explicitly state that independent validation in separate benchmark cohorts is required before any firm conclusions can be drawn and we strongly maintain this as an exploratory finding. While macroscopic deliberation geometry captures overall trajectory convergence and subspace compression, not a proven predictor of task success, this first finding suggests localized, tool-specific representations may warrant further study as possible correlates of execution reliability.
+
+\ifdefined\isincluded
+\else
+\begin{thebibliography}{99}
+\bibitem{sorscher2022beyond} B.~Sorscher, R.~Geirhos, S.~Shekhar, S.~Ganguli, and A.~S. Morcos, ``Beyond neural scaling laws: beating power law scaling via data pruning,'' in \emph{Advances in Neural Information Processing Systems (NeurIPS)}, 2022.
+\bibitem{roy2007effective} O.~Roy and M.~Vetterli, ``The effective rank: A measure of effective dimensionality,'' in \emph{15th European Signal Processing Conference (EUSIPCO)}, pp.~606--610, 2007.
+\end{thebibliography}
+\end{document}
+\fi

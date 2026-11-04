@@ -1,0 +1,16 @@
+{
+  "latent_react": {
+    "ROC_AUC": 0.5948,
+    "Accuracy": 68.42,
+    "F1_Score": 0.8022,
+    "sample_size": 114,
+    "error_rate_pct": 71.1
+  },
+  "text_react": {
+    "ROC_AUC": 0.6817,
+    "Accuracy": 73.68,
+    "F1_Score": 0.8438,
+    "sample_size": 114,
+    "error_rate_pct": 73.7
+  }
+}

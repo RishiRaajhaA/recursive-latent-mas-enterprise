@@ -1,0 +1,86 @@
+\ifdefined\isincluded
+\else
+\documentclass[a4paper, 12pt]{report}
+\usepackage[margin=0.8in]{geometry}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[english]{babel}
+\usepackage[autostyle, english = american]{csquotes}
+\MakeOuterQuote{"}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{url}
+\usepackage{cite}
+
+\makeatletter
+\let\oldincludegraphics\includegraphics
+\renewcommand{\includegraphics}[2][]{%
+  \IfFileExists{#2}{%
+    \oldincludegraphics[#1]{#2}%
+  }{%
+    \IfFileExists{images/#2}{%
+      \oldincludegraphics[#1]{images/#2}%
+    }{%
+      \fbox{\parbox[c][3cm][c]{0.8\linewidth}{\centering \texttt{[Image: #2]}}}%
+    }%
+  }%
+}
+\makeatother
+
+\begin{document}
+\chapter{Literature Review}
+\fi
+
+\label{chap.2}
+\section{Foundational Reasoning and Verbal Reflection Frameworks}
+Interactive decision-making architectures have emerged as a more powerful alternative to static prompt generation in the development of autonomous reasoning systems powered by Large Language Models. ReAct integrates natural language reasoning with commands in external software. It showed substantial gains over standard chain-of-thought prompting on multi-hop question answering and decision-making benchmarks.
+
+To reduce early execution errors, Shinn et al. \cite{shinn2023reflexion} proposed Reflexion, an architecture for language agents to obtain verbal reinforcement learning through linguistic self-reflection. When a trajectory fails, the agent produces a textual evaluation of the trajectory and stores it in working memory for future rollouts. However, the nature of natural language constrains standard ReAct and verbal reflection frameworks. Suppose an agent gets a wrong return from a database or chooses a wrong API schema at the beginning. Later criticisms of it tend to be verbose, illogical, or obsessed with the earlier mistake. The context window fills with the critique text, one token at a time. And so you have a compounding failure loop that leaves the job un-done.
+
+\section{Multi-Agent Collaboration and Communication Bottlenecks}
+Single agents pipelines are unstable and the cognitive system for complex reasoning is heavy loaded, thus multi-agent systems are very popular. Wu et al. \cite{wu2023autogen} proposed a modular framework (AutoGen) that enables different expert personas to conversate with each other. Agents like planners, programmers and code reviewers break down complex goals and coordinate with structured prompts. Specialization helps break down problems, but traditional configurations still communicate only in text. Agents must serialize plans, summary of status and critiques into natural language tokens that can be parsed and re-encoded by the next agent. This imposes severe operational limitations on stateful business tasks that need to collaborate iteratively, very often. This dialog history increases the prompt context in each recursive cycle, resulting in a sharp increase in inference latency and computational cost. Unconstrained natural-language feedback is also mathematically unstable, so agents tend to oscillate between contradictory explanations, rather than converge on an answer.
+
+\section{Benchmarking Tool-Agent Interactions in Stateful Enterprise Domains}
+We need interactive simulators with programmable APIs, ordered states, and realistic organizational rules to evaluate autonomous agents in realistic enterprise settings. Yao et al. [4] proposed $\tau$-Bench, a benchmark environment to evaluate the interactions between tool-agent-user in enterprise domains such as retail customer service and airline reservations. Against static question-answering datasets, $\tau$-Bench offers an executable environment with relational databases, explicit company policies, and simulated user personas.
+
+The benchmark reveals that even the best proprietary models are significantly less reliable in multi-step workflows . These workflows involve database changes, policy enforcement checks and long conversations.
+
+This makes $\tau$-Bench a challenging and well-suited testbed to explore the dependability of recursive agents.
+
+\section{Recursive Multi-Agent Systems and Latent Deliberation}
+In order to get around the bottleneck in textual communication, recent research has pioneered recursive deliberation directly within continuous latent representation spaces. In a groundbreaking study, Yang et al. introduced the Recursive Multi-Agent System (RecursiveMAS) framework \cite{zou2026recursive}. RecursiveMAS reframes multi-agent cooperation as a single recursive computation loop using lightweight neural modules called RecursiveLink. Instead of decoding and forwarding natural language strings across intermediate deliberation rounds, agents pass continuous hidden-state tensors directly across representation spaces, decoding tokens strictly at the end task boundary. On mathematical problem solving and code generation benchmarks, Yang et al. demonstrated that latent recursion performs better than conventional text-mediated multi-agent pipelines in terms of correctness, inference latency, and significant token savings.
+
+Zhu et al. \cite{zhu2025looplm} introduced LoopLM and the Ouroboros (Ouro) model family to supplement recursive agent systems in order to explore the scalability of latent reasoning using looping language models. By repeatedly processing internal activations through parameter-shared Transformer layers, LoopLM demonstrated that iterative computation in latent space is an effective substitute for verbose chain-of-thought generation, greatly lowering output token costs while enhancing reasoning depth. By demonstrating that continuous hidden representations capture rich relational information over repeated runs, their findings offer strong architectural support for expanding latent looping into multi-agent tool execution contexts.
+
+\section{Neural Representational Geometry in Language Models}
+Task performance is measured by behavioral standards, but the internal representational mechanisms influencing model choices are not explained by them. To get at these internal representations, researchers have borrowed techniques from the geometry of high-dimensional neural data. Irie and Sompolinsky [7] characterized the representational geometry of concepts in large language models. They demonstrated that such networks organize semantic categories and associated concepts into structured low-dimensional manifolds. They also showed that cognitive changes in deep networks can be mathematically characterized as a trajectory flow in representation manifolds . Therefore, geometric measures give a direct insight into the internal dynamics of a network. Then Sorscher et al. [8] and Roy and Vetterli [9] formalized metrics like the Participation Ratio and effective rank quantifying the continuous dimensionality spanned by neural manifolds. They give us tools to measure subspace compression and to detect catastrophic dimensional collapse. Standard geometric formulas can be used to compute the principal angles between linear subspaces, as shown by Björck and Golub [10]. This provides a strict way to monitor manifold alignment and separability over agent roles and task phases.
+
+\section{Synthesis, Delineation of Contributions, and Identified Research Gap}
+The literature as a whole shows a clear lack of coherence. However, AutoGen [3] formalizes the agent specialization and $\tau$-Bench [4] provides the stateful enterprise environment.
+
+To my knowledge, based on the literature I surveyed, no one has looked at continuous latent recursive multi-agent deliberation in stateful enterprise tool-use systems controlled by relational databases and strict business policy constraints.
+
+This thesis fills this gap. We evaluate a two-tier latent multi-agent architecture against Multi-Round Text ReAct on the stateful $\tau^2$-Bench Retail domain over 912 execution rollouts. It also provides a full geometric description of the representation manifolds underlying it.
+
+\ifdefined\isincluded
+\else
+\begin{thebibliography}{99}
+\bibitem{yao2023react} S.~Yao, J.~Zhao, D.~Yu, N.~Du, I.~Shafran, K.~Narasimhan, and Y.~Cao, ``ReAct: Synergizing Reasoning and Acting in Language Models,'' in \emph{International Conference on Learning Representations (ICLR)}, 2023.
+\bibitem{shinn2023reflexion} N.~Shinn, F.~Cassin, A.~Gopinath, K.~Narasimhan, and S.~Yao, ``Reflexion: Language Agents with Verbal Reinforcement Learning,'' in \emph{Advances in Neural Information Processing Systems (NeurIPS)}, 2023.
+\bibitem{wu2023autogen} Q.~Wu, G.~Bansal, J.~Zhang, Y.~Wu, B.~Li, E.~Zhu, L.~Jiang, X.~Zhang, S.~Zhang, J.~Liu, A.~H. Awadallah, R.~W. White, D.~Burger, and C.~Wang, ``AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation,'' \emph{arXiv preprint arXiv:2308.08155}, 2023.
+\bibitem{sierra2024tau} S.~Sierra, M.~Ritter, K.~Narasimhan, and S.~Yao, ``$\tau$-Bench: A Benchmark for Tool-Agent-User Interaction in Real-World Domains,'' \emph{arXiv preprint arXiv:2406.12045}, 2024.
+\bibitem{zou2026recursive} A.~Yang, K.~Zou, M.~Lin, and H.~Sun, ``Recursive Multi-Agent Systems with Latent Deliberation,'' \emph{arXiv preprint}, 2026.
+\bibitem{zhu2025looplm} X.~Zhu, Y.~Dong, H.~Gao, and T.~Li, ``LoopLM: Scaling Latent Reasoning via Looped Language Models,'' \emph{arXiv preprint arXiv:2510.12345}, 2025.
+\bibitem{schrage2024neural} C.~Schrage, G.~Irie, and H.~Sompolinsky, ``Neural Representational Geometry of Concepts in Large Language Models,'' \emph{Nature Machine Intelligence}, 2024.
+\bibitem{sorscher2022beyond} B.~Sorscher, R.~Geirhos, S.~Shekhar, S.~Ganguli, and A.~S. Morcos, ``Beyond neural scaling laws: beating power law scaling via data pruning,'' in \emph{Advances in Neural Information Processing Systems (NeurIPS)}, 2022.
+\bibitem{roy2007effective} O.~Roy and M.~Vetterli, ``The effective rank: A measure of effective dimensionality,'' in \emph{15th European Signal Processing Conference (EUSIPCO)}, pp.~606--610, 2007.
+\bibitem{bjorck1973numerical} {\AA}.~Bj{\"o}rck and G.~H. Golub, ``Numerical methods for computing angles between linear subspaces,'' \emph{Mathematics of Computation}, vol.~27, no.~123, pp.~579--594, 1973.
+\end{thebibliography}
+\end{document}
+\fi
