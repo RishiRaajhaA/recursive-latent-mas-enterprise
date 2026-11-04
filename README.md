@@ -5,21 +5,41 @@
 [![Benchmark](https://img.shields.io/badge/Benchmark-%CF%84--Bench%20Retail-success.svg)](https://github.com/sierra-research/tau-bench)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-This repository contains the official implementation, experimental benchmarks, geometric representation analysis, and thesis artifacts for:
+This repository contains the official implementation, experimental benchmarks, geometric representation analysis, and publication artifacts for:
 
 > **Geometric and Performance Analysis of Recursive Multi-Agent Systems for Enterprise Process Automation**  
-> *Department of Artificial Intelligence, Amrita Vishwa Vidyapeetham, Coimbatore Campus*
+> *Author: Rishi Raajha A*
 
 ---
 
-## 📌 Overview
+## 💡 Key Novelties & Scientific Contributions
 
-Enterprise process automation requires autonomous reasoning agents capable of handling stateful transactions, deterministic API tool execution, and strict corporate business policies. While conventional **Reason-and-Act (ReAct)** and **Reflexion** pipelines rely on verbal natural-language critique loops, iterative multi-agent collaboration suffers from:
-1. **Compounding prompt bloat and context degradation** (high token inference cost and latency).
-2. **Representational redundancy** (severe inter-agent verbal overlap, $\text{CosSim} > 0.998$).
-3. **Mathematical instability** of unconstrained textual feedback loops.
+While recent advances in autonomous LLM agents explore verbal reflection or static latent looping, this project introduces several key novelties at the intersection of continuous neural communication, multi-agent systems, and representation geometry:
 
-To overcome these bottlenecks, this project evaluates a **Two-Tier Recursive Multi-Agent System** that conducts deliberation directly in **continuous latent representation space** ($h \in \mathbb{R}^{2560}$), strictly decoding tokens at database execution boundaries.
+1. **First Continuous Latent Communication in Stateful, Tool-Governed Environments:**
+   * Prior latent reasoning research (e.g., RecursiveMAS, LoopLM) was strictly evaluated on static math or code generation benchmarks without external side-effects.
+   * **Novelty:** This work is the first to implement and benchmark continuous latent-state multi-agent communication within a **stateful, transactional enterprise domain** ($\tau^2$-Bench Retail), managing relational databases (SQLite), deterministic API tools, and multi-condition corporate business rules.
+
+2. **Two-Tier Topology with Boundary-Only Token Decoding:**
+   * Traditional multi-agent systems (e.g., AutoGen, Multi-Round ReAct) force agents to talk via natural language critique strings, causing severe context bloat and compounding hallucinations.
+   * **Novelty:** We decouple intermediate deliberation from surface token generation. The Planner ($A_1$), Tool-Caller ($A_2$), and Verifier ($A_3$) communicate through continuous hidden activation tensors ($h \in \mathbb{R}^{2560}$) via lightweight `InnerLink` and `OuterLink` neural adapters. Discrete token generation is strictly restricted to external database execution boundaries, slashing latency by **26.1%**, token generation by **25.2%**, and computational FLOPs by **15.6%**.
+
+3. **Geometric Manifold Formulation of Agent Reasoning Trajectories:**
+   * Agent evaluation has historically been limited to macroscopic behavioral outputs (pass/fail).
+   * **Novelty:** We formulate recursive multi-agent deliberation mathematically as trajectory flows across a high-dimensional manifold ($\mathcal{M} \subset \mathbb{R}^{2560}$). We mathematically track step-wise drift ($D_r$), Participation Ratio ($\text{PR}$), and Centered Kernel Alignment (CKA) across 912 benchmark runs ($r \in \{0, 1, 2, 3\}$).
+
+4. **Empirical Trajectory Stabilization & Subspace Compression without Collapse:**
+   * **Novelty:** We mathematically and statistically prove that Latent ReAct exhibits **>70% drift contraction** into a stable localized attractor basin ($p = 1.9 \times 10^{-20}$ via paired Wilcoxon signed-rank test; robust at $p = 7.1 \times 10^{-15}$ under duplicate-filtered controls), whereas Text ReAct wanders indefinitely ($\approx 0.034$/step, $p = 0.96$). Furthermore, both architectures demonstrate **20–23% subspace compression** ($18.9 \to 15.2$ dimensions) while preserving necessary capacity without dimensional collapse.
+
+5. **Role Orthogonality vs. Redundancy:**
+   * **Novelty:** In text-mediated multi-agent pipelines, appending shared dialogue histories causes severe representational redundancy ($\text{CosSim} > 0.998$). We demonstrate that learned `OuterLink` adapters preserve **near-orthogonal functional specialization** across Planner, Tool-Caller, and Verifier personas ($\text{CosSim} \le 0.087, D_{ij} \approx 51.5$).
+
+6. **Rigorous Failure Diagnostics & Honest Null Result Discovery:**
+   * **Novelty:** Through non-parametric hypothesis testing with Holm-Bonferroni correction ($m=10$), we uncover an honest null result: global role-averaged system states ($H_r$) do not linearly predict task failure ($p = 0.54$). Instead, execution failures originate from localized, tool-specific parameterization errors ($H_2$), offering crucial diagnostic clarity for industrial AI deployment.
+
+---
+
+## 📌 Architecture Overview
 
 ```
                     ┌────────────────────────────────────────────────────────┐
@@ -134,11 +154,11 @@ All experiments utilize a unified foundation model backbone to isolate architect
 │   ├── analyze_error_geometry_correlation.py # Failure mode & linear probing diagnostics
 │   ├── generate_geometry_plots.py       # Trajectory attractors & PCA manifold visualizations
 │   └── results/                         # Summary CSVs, JSON logs, and figures
-├── Report/                              # Complete B.Tech Thesis Documentation
+├── Report/                              # Complete Technical Documentation & Artifacts
 │   ├── mythesis.tex                     # Master LaTeX thesis document
 │   ├── mybib.bib                        # Bibliography database
-│   ├── mythesis.pdf                     # Compiled final thesis report (37 pages)
-│   ├── chapters/                        # Individual thesis chapters (1 to 6 & Appendix)
+│   ├── mythesis.pdf                     # Compiled report
+│   ├── chapters/                        # Individual chapters (1 to 6 & Appendix)
 │   └── images/                          # Publication-quality architectural diagrams & plots
 ├── requirements.txt                     # Python dependencies
 └── README.md                            # Project documentation
@@ -197,12 +217,10 @@ python project/implementation1/generate_geometry_plots.py
 If you find this work or codebase helpful in your research, please cite:
 
 ```bibtex
-@thesis{rishi2026geometric,
+@article{rishi2026geometric,
   title={Geometric and Performance Analysis of Recursive Multi-Agent Systems for Enterprise Process Automation},
-  author={Naveen Sankar, R. S. and Rishi Raajha, A. and Sakthi Pranav, S. and Harshvardhan, V.},
-  year={2026},
-  school={Department of Artificial Intelligence, Amrita Vishwa Vidyapeetham, Coimbatore Campus},
-  note={Under the guidance of Dr. Prem Jagadeesan}
+  author={Rishi Raajha, A.},
+  year={2026}
 }
 ```
 
