@@ -154,13 +154,8 @@ All experiments utilize a unified foundation model backbone to isolate architect
 │   ├── analyze_error_geometry_correlation.py # Failure mode & linear probing diagnostics
 │   ├── generate_geometry_plots.py       # Trajectory attractors & PCA manifold visualizations
 │   └── results/                         # Summary CSVs, JSON logs, and figures
-├── Report/                              # Complete Technical Documentation & Artifacts
-│   ├── mythesis.tex                     # Master LaTeX thesis document
-│   ├── mybib.bib                        # Bibliography database
-│   ├── mythesis.pdf                     # Compiled report
-│   ├── chapters/                        # Individual chapters (1 to 6 & Appendix)
-│   └── images/                          # Publication-quality architectural diagrams & plots
 ├── requirements.txt                     # Python dependencies
+├── RecursiveMAS.pdf                     # Foundational base paper reference
 └── README.md                            # Project documentation
 ```
 

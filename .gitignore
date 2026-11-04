@@ -37,14 +37,18 @@ project/implementation1/results/latents/
 latents/
 *.pt
 
-# Local Backups & Redundant Archives
+# Local Backups & Thesis/Report Folders
+Report/
 backup/
 Report.rar
-Report/bin/
-Report/tectonic.zip
-Report/backup_tex/
-Report/AI_Content_Report*.pdf
-Report/ai_report_extracted.txt
+D01_PPT.pdf
+Final Review.pdf
+First Review.pdf
+Proposal.pdf
+First_Review_Progress_Report.tex
+ppt_plan_first_review.md
+*.pdf
+!RecursiveMAS.pdf
 
 # External Upstream Benchmarks & Frameworks (Clone as documented in README)
 tau2-bench-main/
@@ -56,3 +60,4 @@ RecursiveMAS-main/
 scratch/
 scratch_*.txt
 experiments/scratch/
+
